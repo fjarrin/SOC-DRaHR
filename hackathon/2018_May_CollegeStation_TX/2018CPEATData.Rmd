@@ -171,6 +171,29 @@ They will be transcribed to this document after the hackathon.
 ## Unit.csv 
 
 ## Upper_Pinto.csv 
+```{r Upper_Pinto.csv}
+dataFile <-'C:/SOC-DRaHR/Upper_Pinto.csv'
+alldata <- read_csv(file=dataFile, skip = 1)
+
+metaData <- alldata[,1:2] %>%
+  filter(!is.na(site_name)) %>%
+  bind_rows(data.frame(site_name='site_name', Upper_Pinto='Upper_Pinto')) %>%
+  spread(key=site_name, value=Upper_Pinto)
+
+sampleData01<- alldata [ ,5:14] %>%
+  gather(key='header', value='value', -depth, -peat_type) %>%
+  filter(!is.na(value)) %>%
+  mutate(value=as.numeric(value))
+
+sampleData02<- alldata [ ,17:23] %>%
+  rename(header='date_type', value='uncal_date_BP', depth='depth_cm') %>%
+  filter(!is.na(value))
+
+sampleData <- sampleData01 %>%
+  bind_rows(sampleData02)
+
+
+```
 
 ## Usinsk.csv 
 
